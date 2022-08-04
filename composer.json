@@ -1,0 +1,36 @@
+{
+    "name": "linku/api-documentation-bundle",
+    "description": "Extension to API-Platform to modify the documenation with more ease",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "keywords": [
+        "Symfony",
+        "bundle",
+        "API Platform",
+        "API Documentation",
+        "OpenAPI"
+    ],
+    "require": {
+        "php": "^7.2|^8.0",
+        "api-platform/core": "^2.5",
+        "symfony/dependency-injection": "^5.4|^6.0",
+        "symfony/http-foundation": "^5.4|^6.0",
+        "symfony/http-kernel": "^5.4|^6.0",
+        "symfony/routing": "^5.4|^6.0",
+        "symfony/config": "^5.4|^6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "roave/security-advisories": "dev-latest"
+    },
+    "autoload": {
+        "psr-4": {
+            "Linku\\ApiDocumentationBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Linku\\ApiDocumentationBundle\\": "tests/"
+        }
+    }
+}

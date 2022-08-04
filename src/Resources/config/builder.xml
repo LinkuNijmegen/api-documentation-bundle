@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service
+                id="linku_api_documentation.builder.open_api_builder"
+                class="Linku\ApiDocumentationBundle\Builder\OpenApiBuilder">
+        </service>
+
+        <service id="Linku\ApiDocumentationBundle\Builder\OpenApiBuilder" alias="linku_api_documentation.builder.open_api_builder"/>
+    </services>
+
+</container>

@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service
+                id="linku_api_documentation.removal.remove_parameters"
+                class="Linku\ApiDocumentationBundle\Removal\RemoveParameters">
+            <argument key="$builder" type="service" id="linku_api_documentation.builder.open_api_builder"/>
+            <argument key="$parameters">%linku_api_documentation.removal.parameters%</argument>
+            <tag>linku_api_documentation.extensions.extension</tag>
+        </service>
+        <service
+                id="linku_api_documentation.removal.remove_responses"
+                class="Linku\ApiDocumentationBundle\Removal\RemoveResponses">
+            <argument key="$builder" type="service" id="linku_api_documentation.builder.open_api_builder"/>
+            <argument key="$responses">%linku_api_documentation.removal.responses%</argument>
+            <tag>linku_api_documentation.extensions.extension</tag>
+        </service>
+    </services>
+
+</container>

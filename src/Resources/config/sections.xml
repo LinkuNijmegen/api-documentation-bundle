@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="linku_api_documentation.sections.sections" class="Linku\ApiDocumentationBundle\Sections\Sections">
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="router"/>
+            <argument>%linku_api_documentation.sections%</argument>
+        </service>
+
+        <!-- Decoration priority for this service needs to be lower than -10 (caching) -->
+        <service
+                id="linku_api_documentation.sections.resource_metadata_factory"
+                class="Linku\ApiDocumentationBundle\Sections\ResourceMetadataFactory"
+                decorates="api_platform.metadata.resource.metadata_factory"
+                decoration-priority="-15">
+            <argument type="service" id="linku_api_documentation.sections.resource_metadata_factory.inner"/>
+            <argument type="service" id="linku_api_documentation.sections.sections"/>
+        </service>
+
+        <service
+                id="linku_api_documentation.sections.documentation_filter"
+                class="Linku\ApiDocumentationBundle\Sections\DocumentationFilter"
+                decorates="api_platform.openapi.factory"
+                decoration-priority="-100">
+            <argument type="service" id="linku_api_documentation.sections.documentation_filter.inner" />
+            <argument type="service" id="linku_api_documentation.sections.resource_metadata_factory" />
+            <argument type="service" id="linku_api_documentation.sections.sections"/>
+        </service>
+    </services>
+</container>

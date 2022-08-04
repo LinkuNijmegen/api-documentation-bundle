@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service
+                id="linku_api_documentation.extensions.open_api_extender"
+                class="Linku\ApiDocumentationBundle\Extensions\OpenApiExtender"
+                decorates="api_platform.openapi.factory">
+            <argument key="$decorated" type="service" id="linku_api_documentation.extensions.open_api_extender.inner" />
+            <argument key="$sections" type="service" id="linku_api_documentation.sections.sections" />
+            <argument key="$extensions" type="tagged_iterator" tag="linku_api_documentation.extensions.extension" />
+        </service>
+    </services>
+
+</container>
