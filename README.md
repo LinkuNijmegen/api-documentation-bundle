@@ -11,6 +11,9 @@ resources or endpoints.
 
 Each section has a `prefix` (URI path prefix) and a `title`.
 
+Using the original `/docs` route will show the section defined as default in `default_section`.
+You can view documentation for other sections using `/{section_prefix}/docs`.
+
 ### Default usage
 By default, all endpoints with a custom defined path that start with the `prefix`
 of a section, will be added to that section. For example, a section with
