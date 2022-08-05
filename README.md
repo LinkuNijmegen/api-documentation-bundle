@@ -12,9 +12,9 @@ file and put the configuration for your project there. An example configuration
 can be found at [the end of this file](#configuration-example).
 
 ## Sections
-Within `sections`, you can define a list of available sections. The identifier 
-used in the list can also be used to define sections on individual API-Platform
-resources or endpoints.
+Within the `sections` configuration, you can define a list of available sections.
+The identifier used in the list can also be used to define sections on individual
+API-Platform resources or endpoints.
 
 Each section has a `prefix` (URI path prefix) and a `title`.
 
