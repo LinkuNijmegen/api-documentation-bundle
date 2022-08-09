@@ -11,6 +11,15 @@ For now, you need to manually add a `config/packages/linku_api_documentation.yam
 file and put the configuration for your project there. An example configuration
 can be found at [the end of this file](#configuration-example).
 
+You also need to add the following route:
+```yaml
+linku_api_documentation:
+    resource: "@LinkuApiDocumentationBundle/Resources/routing/sections.xml"
+```
+
+Optionally, you can add a `prefix:` to prefix all paths generated. This should be the
+same prefix as used by API-Platform in their routes.
+
 ## Sections
 Within the `sections` configuration, you can define a list of available sections.
 The identifier used in the list can also be used to define sections on individual
