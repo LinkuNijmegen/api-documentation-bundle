@@ -42,6 +42,7 @@ final class OpenApiExtender implements OpenApiFactoryInterface
             }
 
             if ($extension instanceof SectionedOpenApiExtension
+                && $this->sections->hasMultipleSections()
                 && !\in_array($this->sections->getCurrentSection()->getName(), $extension->getSupportedSections())) {
                 continue;
             }
