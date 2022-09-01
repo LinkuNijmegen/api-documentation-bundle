@@ -10,7 +10,10 @@
                 class="Linku\ApiDocumentationBundle\Builder\OpenApiBuilder">
         </service>
 
-        <service id="Linku\ApiDocumentationBundle\Builder\OpenApiBuilder" alias="linku_api_documentation.builder.open_api_builder"/>
+        <service
+                id="Linku\ApiDocumentationBundle\Builder\OpenApiBuilder"
+                alias="linku_api_documentation.builder.open_api_builder"
+        />
     </services>
 
 </container>

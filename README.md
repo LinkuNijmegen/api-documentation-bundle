@@ -73,6 +73,10 @@ To remove a parameter, the endpoint `path` and `method` are required. As well as
 `name` of the parameter. These can be added to the `linku_api_documentation.removal.parameters`
 list.
 
+### Request bodies
+To remove a request body, the endpoint `path` and `method` are required. These can be
+added to the `linku_api_documentation.removal.request_bodies` list.
+
 ### Responses
 To remove a response, the endpoint `path` and `method` are required. As well as the
 `statusCode` of the response. These can be added to the `linku_api_documentation.removal.responses`
@@ -95,6 +99,10 @@ linku_api_documentation:
             - path: '/users/me'
               method: 'get'
               name: 'uuid'
+
+        request_bodies:
+            - path: '/tasks/{id}/complete'
+              method: 'put'
 
         responses:
             - path: '/users/update_credentials'

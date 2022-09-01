@@ -30,6 +30,7 @@ final class LinkuApiDocumentationExtension extends BaseExtension
 
         $container->setParameter('linku_api_documentation.sections', $config['sections']);
         $container->setParameter('linku_api_documentation.removal.parameters', $config['removal']['parameters']);
+        $container->setParameter('linku_api_documentation.removal.request_bodies', $config['removal']['request_bodies']);
         $container->setParameter('linku_api_documentation.removal.responses', $config['removal']['responses']);
     }
 }
