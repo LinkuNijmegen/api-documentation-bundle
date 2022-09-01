@@ -10,6 +10,10 @@
             <argument type="service" id="router"/>
             <argument>%linku_api_documentation.sections%</argument>
         </service>
+        <service
+                id="Linku\ApiDocumentationBundle\Sections\Sections"
+                alias="linku_api_documentation.sections.sections"
+        />
 
         <!-- Decoration priority for this service needs to be lower than -10 (caching) -->
         <service
