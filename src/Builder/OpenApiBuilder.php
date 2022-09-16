@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Linku\ApiDocumentationBundle\Builder;
 
-use ApiPlatform\Core\OpenApi\Model\MediaType;
-use ApiPlatform\Core\OpenApi\Model\Operation;
-use ApiPlatform\Core\OpenApi\Model\PathItem;
-use ApiPlatform\Core\OpenApi\Model\RequestBody;
-use ApiPlatform\Core\OpenApi\Model\Response;
-use ApiPlatform\Core\OpenApi\OpenApi;
+use ApiPlatform\OpenApi\Model\MediaType;
+use ApiPlatform\OpenApi\Model\Operation;
+use ApiPlatform\OpenApi\Model\PathItem;
+use ApiPlatform\OpenApi\Model\RequestBody;
+use ApiPlatform\OpenApi\Model\Response;
+use ApiPlatform\OpenApi\OpenApi;
 
 final class OpenApiBuilder
 {
