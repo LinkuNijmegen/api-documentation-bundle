@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Linku\ApiDocumentationBundle\Extensions;
 
-use ApiPlatform\Core\OpenApi\OpenApi;
+use ApiPlatform\OpenApi\OpenApi;
 
 interface OpenApiExtension
 {

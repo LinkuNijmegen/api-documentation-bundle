@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Linku\ApiDocumentationBundle\Removal;
 
-use ApiPlatform\Core\OpenApi\Model\Operation;
-use ApiPlatform\Core\OpenApi\OpenApi;
+use ApiPlatform\OpenApi\Model\Operation;
+use ApiPlatform\OpenApi\OpenApi;
 use Linku\ApiDocumentationBundle\Builder\OpenApiBuilder;
 use Linku\ApiDocumentationBundle\Extensions\OpenApiExtension;
 
