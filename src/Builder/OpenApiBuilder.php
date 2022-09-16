@@ -91,12 +91,10 @@ final class OpenApiBuilder
             return $openApi;
         }
 
-        $operationResponses = $operation->getResponses();
-
         $operation = $callback($operation);
 
         // Calling addPath with an existing path will override the original
-        $paths->addPath($path, $pathItem->$wither($operation->withResponses($operationResponses)));
+        $paths->addPath($path, $pathItem->$wither($operation));
 
         return $openApi->withPaths($paths);
     }
