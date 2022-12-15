@@ -10,21 +10,21 @@
                 class="Linku\ApiDocumentationBundle\Removal\RemoveParameters">
             <argument key="$builder" type="service" id="linku_api_documentation.builder.open_api_builder"/>
             <argument key="$parameters">%linku_api_documentation.removal.parameters%</argument>
-            <tag>linku_api_documentation.extensions.extension</tag>
+            <tag name="linku_api_documentation.extensions.extension"/>
         </service>
         <service
                 id="linku_api_documentation.removal.remove_request_bodies"
                 class="Linku\ApiDocumentationBundle\Removal\RemoveRequestBodies">
             <argument key="$builder" type="service" id="linku_api_documentation.builder.open_api_builder"/>
             <argument key="$requestBodies">%linku_api_documentation.removal.request_bodies%</argument>
-            <tag>linku_api_documentation.extensions.extension</tag>
+            <tag name="linku_api_documentation.extensions.extension"/>
         </service>
         <service
                 id="linku_api_documentation.removal.remove_responses"
                 class="Linku\ApiDocumentationBundle\Removal\RemoveResponses">
             <argument key="$builder" type="service" id="linku_api_documentation.builder.open_api_builder"/>
             <argument key="$responses">%linku_api_documentation.removal.responses%</argument>
-            <tag>linku_api_documentation.extensions.extension</tag>
+            <tag name="linku_api_documentation.extensions.extension"/>
         </service>
     </services>
 
