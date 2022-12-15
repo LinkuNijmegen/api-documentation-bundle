@@ -81,13 +81,18 @@ final class Sections
 
         $prefix = $this->requestStack->getMainRequest()->attributes->get('section', '');
 
+        return $this->getSectionFromPrefix($prefix) ?? $this->defaultSection;
+    }
+
+    public function getSectionFromPrefix($prefix): ?Section
+    {
         foreach ($this->sections as $section) {
             if ($section->getPrefix() === $prefix) {
                 return $section;
             }
         }
 
-        return $section;
+        return null;
     }
 
     public function hasMultipleSections(): bool
