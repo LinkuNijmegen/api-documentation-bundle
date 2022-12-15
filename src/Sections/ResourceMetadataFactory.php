@@ -46,8 +46,8 @@ final class ResourceMetadataFactory implements ResourceMetadataFactoryInterface
             return $metadata;
         }
 
-        // If entire resource has a 'sections' attribute and is not in current section, remove all paths
-        $metadataSections = $metadata->getAttribute('sections');
+        // If entire resource has a 'sections' or 'route_prefix' attribute and is not in current section, remove all paths
+        $metadataSections = $this->getSectionsFromMetadata($metadata);
         if ($metadataSections !== null) {
             if ($this->sections->isCurrentSectionAllowed($metadataSections)) {
                 return $metadata; // Don't filter subitems when the entire resource is allowed
@@ -74,6 +74,26 @@ final class ResourceMetadataFactory implements ResourceMetadataFactoryInterface
         }
 
         return $metadata;
+    }
+
+    private function getSectionsFromMetadata(ResourceMetadata $metadata): ?array
+    {
+        // Check sections attribute first
+        $sections = $metadata->getAttribute('sections');
+        if ($sections !== null) {
+            return $sections;
+        }
+
+        // If that isn't used, check the route_prefix attribute
+        $prefix = $metadata->getAttribute('route_prefix');
+        if ($prefix !== null) {
+            $section = $this->sections->getSectionFromPrefix(\ltrim($prefix, '/'));
+            if ($section !== null) {
+                return [$section->getName()];
+            }
+        }
+
+        return null;
     }
 
     private function filterOperations(array $operations): array
