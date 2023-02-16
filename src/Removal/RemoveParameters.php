@@ -12,17 +12,14 @@ use Linku\ApiDocumentationBundle\Extensions\OpenApiExtension;
 final class RemoveParameters implements OpenApiExtension
 {
     /**
-     * @var OpenApiBuilder
-     */
-    private $builder;
-    /**
      * @var Parameter[]
      */
-    private $parameters = [];
+    private array $parameters = [];
 
-    public function __construct(OpenApiBuilder $builder, array $parameters)
-    {
-        $this->builder = $builder;
+    public function __construct(
+        private readonly OpenApiBuilder $builder,
+        array $parameters,
+    ) {
         foreach ($parameters as $parameterData) {
             $this->parameters[] = new Parameter(
                 $parameterData['path'],
@@ -37,13 +34,13 @@ final class RemoveParameters implements OpenApiExtension
         foreach ($this->parameters as $parameter) {
             $docs = $this->builder->alterOperation(
                 $docs,
-                $parameter->getPath(),
-                $parameter->getMethod(),
+                $parameter->path,
+                $parameter->method,
                 static function (Operation $operation) use ($parameter) {
                     $parameters = $operation->getParameters();
 
                     foreach ($parameters as $key => $pathParameter) {
-                        if ($pathParameter->getName() === $parameter->getParameterName()) {
+                        if ($pathParameter->getName() === $parameter->parameterName) {
                             unset($parameters[$key]);
                         }
                     }

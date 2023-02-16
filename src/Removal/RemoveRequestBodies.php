@@ -12,17 +12,14 @@ use Linku\ApiDocumentationBundle\Extensions\OpenApiExtension;
 final class RemoveRequestBodies implements OpenApiExtension
 {
     /**
-     * @var OpenApiBuilder
+     * @var RequestBody[]
      */
-    private $builder;
-    /**
-     * @var Parameter[]
-     */
-    private $requestBodies = [];
+    private array $requestBodies = [];
 
-    public function __construct(OpenApiBuilder $builder, array $requestBodies)
-    {
-        $this->builder = $builder;
+    public function __construct(
+        private readonly OpenApiBuilder $builder,
+        array $requestBodies
+    ) {
         foreach ($requestBodies as $requestBodyData) {
             $this->requestBodies[] = new RequestBody(
                 $requestBodyData['path'],
@@ -36,8 +33,8 @@ final class RemoveRequestBodies implements OpenApiExtension
         foreach ($this->requestBodies as $requestBody) {
             $docs = $this->builder->alterOperation(
                 $docs,
-                $requestBody->getPath(),
-                $requestBody->getMethod(),
+                $requestBody->path,
+                $requestBody->method,
                 static function (Operation $operation) {
                     // Just because we can't pass `null` through `withRequestBody`
                     return new Operation(

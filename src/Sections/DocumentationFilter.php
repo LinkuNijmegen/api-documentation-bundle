@@ -9,26 +9,11 @@ use ApiPlatform\OpenApi\OpenApi;
 
 final class DocumentationFilter implements OpenApiFactoryInterface
 {
-    /**
-     * @var OpenApiFactoryInterface
-     */
-    private $decorated;
-
-    /**
-     * @var ResourceMetadataFactory
-     */
-    private $resourceMetadataFactory;
-
-    /**
-     * @var Sections
-     */
-    private $sections;
-
-    public function __construct(OpenApiFactoryInterface $decorated, ResourceMetadataFactory $sectionResourceMetadataFactory, Sections $sections)
-    {
-        $this->decorated = $decorated;
-        $this->resourceMetadataFactory = $sectionResourceMetadataFactory;
-        $this->sections = $sections;
+    public function __construct(
+        private readonly OpenApiFactoryInterface $decorated,
+        private readonly ResourceMetadataCollectionFactory $resourceMetadataFactory,
+        private readonly Sections $sections,
+    ) {
     }
 
     public function __invoke(array $context = []): OpenApi

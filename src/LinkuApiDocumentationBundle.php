@@ -10,11 +10,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class LinkuApiDocumentationBundle extends Bundle
 {
-    public function build(ContainerBuilder $container): void
-    {
-        parent::build($container);
-    }
-
     public function getContainerExtension(): ExtensionInterface
     {
         return new LinkuApiDocumentationExtension();

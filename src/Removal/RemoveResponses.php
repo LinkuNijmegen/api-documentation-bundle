@@ -12,17 +12,14 @@ use Linku\ApiDocumentationBundle\Extensions\OpenApiExtension;
 final class RemoveResponses implements OpenApiExtension
 {
     /**
-     * @var OpenApiBuilder
-     */
-    private $builder;
-    /**
      * @var Response[]
      */
-    private $responses = [];
+    private array $responses = [];
 
-    public function __construct(OpenApiBuilder $builder, array $responses)
-    {
-        $this->builder = $builder;
+    public function __construct(
+        private readonly OpenApiBuilder $builder,
+        array $responses
+    ) {
         foreach ($responses as $responseData) {
             $this->responses[] = new Response($responseData['path'], $responseData['method'], $responseData['statusCode']);
         }
@@ -33,12 +30,12 @@ final class RemoveResponses implements OpenApiExtension
         foreach ($this->responses as $response) {
             $docs = $this->builder->alterOperation(
                 $docs,
-                $response->getPath(),
-                $response->getMethod(),
+                $response->path,
+                $response->method,
                 static function (Operation $operation) use ($response) {
                     $responses = $operation->getResponses();
 
-                    unset($responses[$response->getStatusCode()]);
+                    unset($responses[$response->statusCode]);
 
                     return $operation->withResponses($responses);
                 }
