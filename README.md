@@ -45,7 +45,7 @@ YAML Example:
 ```yaml
 resources:
     App\Task\Task:
-        attributes:
+        extraProperties:
             sections: ['customerPortal']
 ```
 
@@ -57,9 +57,10 @@ YAML Example:
 ```yaml
 resources:
     App\Task\Task:
-        itemOperations:
-            get:
-                sections: ['customerPortal']
+        operations:
+            ApiPlatform\Metadata\Get:
+                extraProperties:
+                    sections: ['customerPortal']
 ```
 
 ## Removal
