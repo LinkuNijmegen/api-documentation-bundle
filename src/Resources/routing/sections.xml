@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing https://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="linku_api_documentation_section_docs" path="/{section}/docs.{_format}" controller="api_platform.action.documentation">
+    <route id="_linku_api_documentation_section_docs" path="/{section}/docs.{_format}" controller="api_platform.action.documentation">
         <default key="_format"></default>
         <default key="_api_respond">true</default>
     </route>
