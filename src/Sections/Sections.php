@@ -10,52 +10,38 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 final class Sections
 {
     /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var UrlGeneratorInterface
-     */
-    private $urlGenerator;
-
-    /**
      * @var Section[]
      */
-    private $sections = [];
+    private array $sections = [];
+    private Section $defaultSection;
+    private string $sectionPathRegex;
 
     /**
-     * @var Section
+     * @throws \RuntimeException
      */
-    private $defaultSection;
-
-    /**
-     * @var string
-     */
-    private $sectionPathRegex;
-
-    public function __construct(RequestStack $requestStack, UrlGeneratorInterface $urlGenerator, array $sections, ?string $defaultSection = null)
-    {
-        $this->requestStack = $requestStack;
-        $this->urlGenerator = $urlGenerator;
-
+    public function __construct(
+        private readonly RequestStack $requestStack,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        array $sections,
+        ?string $defaultSectionName = null
+    ) {
         if (!\count($sections)) {
-            throw new \Exception('Needs at least 1 section'); // @TODO: Create own exception
+            throw new \RuntimeException('Needs at least 1 section'); // @TODO: Create own exception
         }
 
         foreach ($sections as $key => $sectionData) {
-            $this->sections[$key] = new Section((string)$key, $sectionData['prefix'], $sectionData['title']);
+            $this->sections[$key] = new Section((string) $key, $sectionData['prefix'], $sectionData['title']);
         }
 
-        if ($defaultSection === null) {
-            $defaultSection = \array_key_first($this->sections);
+        if ($defaultSectionName === null) {
+            $defaultSectionName = (string) \array_key_first($this->sections);
         }
 
-        if (!isset($this->sections[$defaultSection])) {
-            throw new \Exception(\sprintf('Given default section "%s" does not exist', $defaultSection)); // @TODO: Create own exception
+        if (!isset($this->sections[$defaultSectionName])) {
+            throw new \RuntimeException(\sprintf('Given default section "%s" does not exist', $defaultSectionName)); // @TODO: Create own exception
         }
 
-        $this->defaultSection = $this->sections[$defaultSection];
+        $this->defaultSection = $this->sections[$defaultSectionName];
 
         $this->sectionPathRegex = \sprintf(
             '/^\/(%s)\//',
@@ -64,7 +50,7 @@ final class Sections
                 \array_filter(
                     \array_map(
                         static function (Section $section) {
-                            return $section->getPrefix();
+                            return $section->prefix;
                         },
                         $this->sections
                     )
@@ -87,7 +73,7 @@ final class Sections
     public function getSectionFromPrefix($prefix): ?Section
     {
         foreach ($this->sections as $section) {
-            if ($section->getPrefix() === $prefix) {
+            if ($section->prefix === $prefix) {
                 return $section;
             }
         }
@@ -106,7 +92,7 @@ final class Sections
 
         // If a matching section is found, check it against the given section
         if (\preg_match($this->sectionPathRegex, $path, $matches)) {
-            return ($matches[1] === $currentSection->getPrefix());
+            return ($matches[1] === $currentSection->prefix);
         }
 
         // If no matching section is found in the path, return true when current section is default
@@ -115,12 +101,12 @@ final class Sections
 
     public function getCurrentSectionTitle(): string
     {
-        return $this->getCurrentSection()->getTitle();
+        return $this->getCurrentSection()->title;
     }
 
     public function isSectionCurrent(string $sectionName): bool
     {
-        return $this->getCurrentSection()->getName() === $sectionName;
+        return $this->getCurrentSection()->name === $sectionName;
     }
 
     public function isCurrentSectionDefault(): bool
@@ -135,7 +121,7 @@ final class Sections
             return true;
         }
 
-        return \in_array($this->getCurrentSection()->getName(), $allowedSections, true);
+        return \in_array($this->getCurrentSection()->name, $allowedSections, true);
     }
 
     public function getDocLinks(): array
@@ -144,13 +130,13 @@ final class Sections
         foreach ($this->sections as $section) {
             $isDefault = $section === $this->defaultSection;
 
-            $links[$section->getName()] = \sprintf(
+            $links[$section->name] = \sprintf(
                 '<a href="%s">%s</a>',
                 $this->urlGenerator->generate(
-                    $isDefault?'api_doc':'linku_api_documentation_section_docs',
-                    $isDefault?[]:['section' => $section->getPrefix()]
+                    $isDefault ? 'api_doc' : '_linku_api_documentation_section_docs',
+                    $isDefault ? [] : ['section' => $section->prefix]
                 ),
-                $section->getTitle()
+                $section->title
             );
         }
         return $links;

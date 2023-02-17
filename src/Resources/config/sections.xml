@@ -17,11 +17,11 @@
 
         <!-- Decoration priority for this service needs to be lower than -10 (caching) -->
         <service
-                id="linku_api_documentation.sections.resource_metadata_factory"
-                class="Linku\ApiDocumentationBundle\Sections\ResourceMetadataFactory"
-                decorates="api_platform.metadata.resource.metadata_factory"
+                id="linku_api_documentation.sections.resource_metadata_collection_factory"
+                class="Linku\ApiDocumentationBundle\Sections\ResourceMetadataCollectionFactory"
+                decorates="api_platform.metadata.resource.metadata_collection_factory"
                 decoration-priority="-15">
-            <argument type="service" id="linku_api_documentation.sections.resource_metadata_factory.inner"/>
+            <argument type="service" id="linku_api_documentation.sections.resource_metadata_collection_factory.inner"/>
             <argument type="service" id="linku_api_documentation.sections.sections"/>
         </service>
 
@@ -31,7 +31,7 @@
                 decorates="api_platform.openapi.factory"
                 decoration-priority="-100">
             <argument type="service" id="linku_api_documentation.sections.documentation_filter.inner" />
-            <argument type="service" id="linku_api_documentation.sections.resource_metadata_factory" />
+            <argument type="service" id="linku_api_documentation.sections.resource_metadata_collection_factory" />
             <argument type="service" id="linku_api_documentation.sections.sections"/>
         </service>
     </services>
