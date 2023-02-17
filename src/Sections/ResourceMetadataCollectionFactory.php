@@ -60,7 +60,7 @@ final class ResourceMetadataCollectionFactory implements ResourceMetadataCollect
     private function getSectionsFromResource(ApiResource $resource): ?array
     {
         // Check sections attribute first
-        $sections = $resource->getExtraProperties()['sections'];
+        $sections = $resource->getExtraProperties()['sections'] ?? null;
         if ($sections !== null) {
             return $sections;
         }
