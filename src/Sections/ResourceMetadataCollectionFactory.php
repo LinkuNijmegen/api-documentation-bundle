@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Linku\ApiDocumentationBundle\Sections;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\Metadata\Operations;
 use ApiPlatform\Metadata\Resource\Factory\ResourceMetadataCollectionFactoryInterface;
@@ -86,7 +87,8 @@ final class ResourceMetadataCollectionFactory implements ResourceMetadataCollect
         /** @var Operation $operation */
         foreach ($operations as $name => $operation) {
             $sections = $operation->getExtraProperties()['sections'] ?? null;
-            $path = $operation->getExtraProperties()['uriTemplate'] ?? null;
+
+            $path = $operation instanceof HttpOperation ? $operation->getUriTemplate() : null;
 
             // If a set of sections is defined for this operation, unset it if none of these sections is the current one
             if ($sections !== null) {
