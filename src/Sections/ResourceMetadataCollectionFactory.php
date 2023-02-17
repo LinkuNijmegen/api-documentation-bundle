@@ -54,7 +54,7 @@ final class ResourceMetadataCollectionFactory implements ResourceMetadataCollect
             return $resource->withOperations(new Operations([]));
         }
 
-        return $resource->withOperations($this->filterOperations($operations));
+        return $resource->withOperations($this->filterOperations($resource->getOperations()));
     }
 
     private function getSectionsFromResource(ApiResource $resource): ?array
