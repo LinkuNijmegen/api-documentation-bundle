@@ -133,7 +133,7 @@ final class Sections
             $links[$section->name] = \sprintf(
                 '<a href="%s">%s</a>',
                 $this->urlGenerator->generate(
-                    $isDefault ? 'api_doc' : 'linku_api_documentation_section_docs',
+                    $isDefault ? 'api_doc' : '_linku_api_documentation_section_docs',
                     $isDefault ? [] : ['section' => $section->prefix]
                 ),
                 $section->title
