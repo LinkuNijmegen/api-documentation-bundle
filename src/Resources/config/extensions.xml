@@ -8,7 +8,8 @@
         <service
                 id="linku_api_documentation.extensions.open_api_extender"
                 class="Linku\ApiDocumentationBundle\Extensions\OpenApiExtender"
-                decorates="api_platform.openapi.factory">
+                decorates="api_platform.openapi.factory"
+                decoration-priority="-10">
             <argument key="$decorated" type="service" id="linku_api_documentation.extensions.open_api_extender.inner" />
             <argument key="$sections" type="service" id="linku_api_documentation.sections.sections" />
             <argument key="$extensions" type="tagged_iterator" tag="linku_api_documentation.extensions.extension" />
