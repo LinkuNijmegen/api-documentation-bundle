@@ -1,0 +1,20 @@
+# Update Linku packages
+-   pipeline: "Update Linku Packages"
+    on: "EVENT"
+    events:
+        -   type: "PUSH"
+            refs:
+                - "(refs/((heads/main)|(heads/(.*)+)|(tags/(.*)+)))"
+    priority: "HIGH"
+    fetch_all_refs: true
+    actions:
+        -   action: "Run packages-satis/Build single package"
+            type: "RUN_NEXT_PIPELINE"
+            comment: "Triggered by $BUDDY_PIPELINE_NAME execution #$BUDDY_EXECUTION_ID for $PACKAGE_NAME"
+            revision: "HEAD"
+            variables:
+                -   key: "PACKAGE_NAME"
+                    value: "linku/api-documentation-bundle"
+                    type: "VAR"
+            next_project_name: "packages-satis"
+            next_pipeline_name: "Build single package"
