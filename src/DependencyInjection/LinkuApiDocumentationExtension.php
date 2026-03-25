@@ -30,32 +30,20 @@ final class LinkuApiDocumentationExtension extends BaseExtension
         $container->registerForAutoconfiguration(OpenApiExtension::class)
             ->addTag('linku_api_documentation.extensions.extension');
 
-        $this->loadServiceDefinitions($container);
-
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('linku_api_documentation.sections', $config['sections']);
+        $container->setParameter('linku_api_documentation.default_section', $config['default_section']);
         $container->setParameter('linku_api_documentation.removal.parameters', $config['removal']['parameters']);
         $container->setParameter('linku_api_documentation.removal.request_bodies', $config['removal']['request_bodies']);
         $container->setParameter('linku_api_documentation.removal.responses', $config['removal']['responses']);
+
+        $this->loadServiceDefinitions($container);
     }
 
     private function loadServiceDefinitions(ContainerBuilder $container): void
     {
-        if (class_exists(\Symfony\Component\DependencyInjection\Loader\XmlFileLoader::class)) {
-            $loader = new \Symfony\Component\DependencyInjection\Loader\XmlFileLoader(
-                $container,
-                new \Symfony\Component\Config\FileLocator(dirname(__DIR__).'/Resources/config'),
-            );
-            $loader->load('builder.xml');
-            $loader->load('extensions.xml');
-            $loader->load('sections.xml');
-            $loader->load('removal.xml');
-
-            return;
-        }
-
         $container->setDefinition(
             'linku_api_documentation.builder.open_api_builder',
             new Definition(OpenApiBuilder::class),
@@ -83,6 +71,7 @@ final class LinkuApiDocumentationExtension extends BaseExtension
                     new Reference('request_stack'),
                     new Reference('router'),
                     '%linku_api_documentation.sections%',
+                    '%linku_api_documentation.default_section%',
                 ]),
         );
         $container->setAlias(

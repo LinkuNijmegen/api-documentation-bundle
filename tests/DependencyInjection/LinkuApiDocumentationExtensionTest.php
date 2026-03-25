@@ -18,6 +18,7 @@ final class LinkuApiDocumentationExtensionTest extends TestCase
 
         $extension->load([[
             'sections' => ['admin' => ['prefix' => 'admin', 'title' => 'Admin']],
+            'default_section' => 'admin',
             'removal' => ['parameters' => [], 'request_bodies' => [], 'responses' => []],
         ]], $container);
 
@@ -26,6 +27,11 @@ final class LinkuApiDocumentationExtensionTest extends TestCase
 
         self::assertTrue($container->hasDefinition('linku_api_documentation.sections.sections'));
         self::assertTrue($container->hasAlias('Linku\ApiDocumentationBundle\Sections\Sections'));
+        $sectionsArguments = $container->getDefinition('linku_api_documentation.sections.sections')->getArguments();
+        self::assertSame('request_stack', (string) $sectionsArguments[0]);
+        self::assertSame('router', (string) $sectionsArguments[1]);
+        self::assertSame('%linku_api_documentation.sections%', $sectionsArguments[2]);
+        self::assertSame('%linku_api_documentation.default_section%', $sectionsArguments[3]);
 
         self::assertDecorates(
             $container->getDefinition('linku_api_documentation.extensions.open_api_extender'),
@@ -48,6 +54,7 @@ final class LinkuApiDocumentationExtensionTest extends TestCase
             ['admin' => ['prefix' => 'admin', 'title' => 'Admin']],
             $container->getParameter('linku_api_documentation.sections'),
         );
+        self::assertSame('admin', $container->getParameter('linku_api_documentation.default_section'));
         self::assertSame([], $container->getParameter('linku_api_documentation.removal.parameters'));
         self::assertSame([], $container->getParameter('linku_api_documentation.removal.request_bodies'));
         self::assertSame([], $container->getParameter('linku_api_documentation.removal.responses'));
