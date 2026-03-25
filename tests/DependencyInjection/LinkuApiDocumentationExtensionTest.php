@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Definition;
 
 final class LinkuApiDocumentationExtensionTest extends TestCase
 {
-    public function test_it_loads_services_and_parameters(): void
+    public function testItLoadsServicesAndParameters(): void
     {
         $container = new ContainerBuilder();
         $extension = new LinkuApiDocumentationExtension();

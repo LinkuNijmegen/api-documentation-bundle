@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class ResourceMetadataCollectionFactoryTest extends TestCase
 {
-    public function test_it_keeps_non_http_operations_when_filtering_mixed_operations(): void
+    public function testItKeepsNonHttpOperationsWhenFilteringMixedOperations(): void
     {
         $resource = new ApiResource(operations: [
             'get_tasks' => new HttpOperation(uriTemplate: '/v1/tasks'),

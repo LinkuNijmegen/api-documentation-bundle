@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 final class OpenApiBuilderTest extends TestCase
 {
-    public function test_it_adds_a_post_operation_and_request_body(): void
+    public function testItAddsAPostOperationAndRequestBody(): void
     {
         $builder = new OpenApiBuilder();
         $openApi = new OpenApi(new Info('Demo', '1.0.0'), [], new Paths());
@@ -49,5 +49,87 @@ final class OpenApiBuilderTest extends TestCase
         self::assertNotNull($mediaType);
         self::assertNotNull($schema);
         self::assertSame('#/components/schemas/TaskInput', $schema['$ref']);
+    }
+
+    public function testItReplacesAnExistingPostOperationForTheSamePath(): void
+    {
+        $builder = new OpenApiBuilder();
+        $openApi = new OpenApi(new Info('Demo', '1.0.0'), [], new Paths());
+
+        $openApi = $builder->addPostOperation(
+            $openApi,
+            '/tasks',
+            'createTaskV1',
+            ['Tasks'],
+            ['201' => new Response('Created v1')],
+            'Create task v1',
+            null
+        );
+
+        $openApi = $builder->addPostOperation(
+            $openApi,
+            '/tasks',
+            'createTaskV2',
+            ['Tasks', 'Replacement'],
+            ['202' => new Response('Accepted')],
+            'Create task v2',
+            $builder->createRequestBody('Task payload', 'TaskInput')
+        );
+
+        $operation = $openApi->getPaths()->getPath('/tasks')?->getPost();
+
+        self::assertNotNull($operation);
+        self::assertSame('createTaskV2', $operation->getOperationId());
+        self::assertSame('Create task v2', $operation->getSummary());
+        self::assertSame(['Tasks', 'Replacement'], $operation->getTags());
+        $responses = $operation->getResponses();
+        self::assertIsArray($responses);
+        self::assertArrayHasKey(202, $responses);
+        self::assertSame('Accepted', $responses[202]->getDescription());
+        self::assertNotNull($operation->getRequestBody());
+    }
+
+    public function testItPreservesExistingMethodsWhenReplacingAPostOperationForTheSamePath(): void
+    {
+        $builder = new OpenApiBuilder();
+        $openApi = new OpenApi(new Info('Demo', '1.0.0'), [], new Paths());
+
+        $openApi = $builder->addGetOperation(
+            $openApi,
+            '/tasks',
+            'getTasks',
+            ['Tasks'],
+            ['200' => new Response('OK')],
+            'List tasks',
+        );
+
+        $openApi = $builder->addPostOperation(
+            $openApi,
+            '/tasks',
+            'createTaskV1',
+            ['Tasks'],
+            ['201' => new Response('Created v1')],
+            'Create task v1',
+            null
+        );
+
+        $openApi = $builder->addPostOperation(
+            $openApi,
+            '/tasks',
+            'createTaskV2',
+            ['Tasks', 'Replacement'],
+            ['202' => new Response('Accepted')],
+            'Create task v2',
+            $builder->createRequestBody('Task payload', 'TaskInput')
+        );
+
+        $path = $openApi->getPaths()->getPath('/tasks');
+        $getOperation = $path?->getGet();
+        $postOperation = $path?->getPost();
+
+        self::assertNotNull($getOperation);
+        self::assertSame('getTasks', $getOperation->getOperationId());
+        self::assertNotNull($postOperation);
+        self::assertSame('createTaskV2', $postOperation->getOperationId());
     }
 }

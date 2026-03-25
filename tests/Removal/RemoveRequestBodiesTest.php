@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 final class RemoveRequestBodiesTest extends TestCase
 {
-    public function test_it_removes_the_request_body_without_losing_operation_metadata(): void
+    public function testItRemovesTheRequestBodyWithoutLosingOperationMetadata(): void
     {
         $externalDocs = new ExternalDocumentation('Task docs', 'https://example.com/tasks');
         $callbacks = new \ArrayObject(['taskCallback' => new \ArrayObject(['status' => 'done'])]);

@@ -50,8 +50,9 @@ final class OpenApiBuilder
         );
 
         $paths = $openApi->getPaths();
+        $pathItem = $paths->getPath($path) ?? new PathItem();
 
-        $paths->addPath($path, (new PathItem())->withPost($operation));
+        $paths->addPath($path, $pathItem->withPost($operation));
 
         return $openApi->withPaths($paths);
     }
@@ -74,8 +75,9 @@ final class OpenApiBuilder
         );
 
         $paths = $openApi->getPaths();
+        $pathItem = $paths->getPath($path) ?? new PathItem();
 
-        $paths->addPath($path, (new PathItem())->withGet($operation));
+        $paths->addPath($path, $pathItem->withGet($operation));
 
         return $openApi->withPaths($paths);
     }

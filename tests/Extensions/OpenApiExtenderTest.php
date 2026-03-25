@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class OpenApiExtenderTest extends TestCase
 {
-    public function test_it_ignores_non_extension_services_in_the_extension_iterable(): void
+    public function testItIgnoresNonExtensionServicesInTheExtensionIterable(): void
     {
         $decorated = new class() implements OpenApiFactoryInterface {
             public function __invoke(array $context = []): OpenApi
