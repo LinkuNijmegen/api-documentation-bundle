@@ -16,6 +16,9 @@ final class RemoveParameters implements OpenApiExtension
      */
     private array $parameters = [];
 
+    /**
+     * @param list<array{path: string, method: string, name: string}> $parameters
+     */
     public function __construct(
         private readonly OpenApiBuilder $builder,
         array $parameters,
@@ -37,7 +40,7 @@ final class RemoveParameters implements OpenApiExtension
                 $parameter->path,
                 $parameter->method,
                 static function (Operation $operation) use ($parameter) {
-                    $parameters = $operation->getParameters();
+                    $parameters = $operation->getParameters() ?? [];
 
                     foreach ($parameters as $key => $pathParameter) {
                         if ($pathParameter->getName() === $parameter->parameterName) {

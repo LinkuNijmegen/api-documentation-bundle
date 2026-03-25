@@ -16,6 +16,9 @@ final class RemoveRequestBodies implements OpenApiExtension
      */
     private array $requestBodies = [];
 
+    /**
+     * @param list<array{path: string, method: string}> $requestBodies
+     */
     public function __construct(
         private readonly OpenApiBuilder $builder,
         array $requestBodies

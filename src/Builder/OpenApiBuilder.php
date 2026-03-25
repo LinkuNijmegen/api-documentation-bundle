@@ -13,6 +13,9 @@ use ApiPlatform\OpenApi\OpenApi;
 
 final class OpenApiBuilder
 {
+    /**
+     * @param array<string, mixed> $errorSchema
+     */
     public function addSchema(OpenApi $openApi, string $schemaName, array $errorSchema): OpenApi
     {
         $components = $openApi->getComponents();
@@ -29,6 +32,10 @@ final class OpenApiBuilder
         return $openApi->withComponents($components->withSchemas($schemas));
     }
 
+    /**
+     * @param list<string> $tags
+     * @param array<int|string, Response> $responses
+     */
     public function addPostOperation(OpenApi $openApi, string $path, string $operationId, array $tags, array $responses, string $summary, ?RequestBody $requestBody): OpenApi
     {
         $operation = new Operation(
@@ -49,6 +56,10 @@ final class OpenApiBuilder
         return $openApi->withPaths($paths);
     }
 
+    /**
+     * @param list<string> $tags
+     * @param array<int|string, Response> $responses
+     */
     public function addGetOperation(OpenApi $openApi, string $path, string $operationId, array $tags, array $responses, string $summary): OpenApi
     {
         $operation = new Operation(
@@ -86,9 +97,8 @@ final class OpenApiBuilder
             return $openApi;
         }
 
-        /** @var Operation $operation */
         $operation = $pathItem->$getter();
-        if (!$operation) {
+        if (!$operation instanceof Operation) {
             return $openApi;
         }
 

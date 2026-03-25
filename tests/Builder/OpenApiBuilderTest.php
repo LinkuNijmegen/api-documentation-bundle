@@ -38,8 +38,10 @@ final class OpenApiBuilderTest extends TestCase
         self::assertSame('postTask', $operation->getOperationId());
         self::assertSame('Create task', $operation->getSummary());
         self::assertSame(['Tasks'], $operation->getTags());
-        self::assertArrayHasKey('201', $operation->getResponses());
-        self::assertSame('Created', $operation->getResponses()['201']->getDescription());
+        $responses = $operation->getResponses();
+        self::assertIsArray($responses);
+        self::assertArrayHasKey(201, $responses);
+        self::assertSame('Created', $responses[201]->getDescription());
         self::assertNotNull($requestBody);
         self::assertTrue($requestBody->getRequired());
         self::assertInstanceOf(\ArrayObject::class, $content);

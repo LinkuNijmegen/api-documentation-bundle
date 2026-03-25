@@ -23,10 +23,6 @@ final class OpenApiExtender implements OpenApiFactoryInterface
         $docs = $this->decorated->__invoke($context);
 
         foreach ($this->extensions as $extension) {
-            if (!$extension instanceof OpenApiExtension) {
-                continue;
-            }
-
             if ($extension instanceof SectionedOpenApiExtension
                 && $this->sections->hasMultipleSections()
                 && !\in_array($this->sections->getCurrentSection()->name, $extension->getSupportedSections())) {

@@ -16,6 +16,9 @@ final class RemoveResponses implements OpenApiExtension
      */
     private array $responses = [];
 
+    /**
+     * @param list<array{path: string, method: string, statusCode: int}> $responses
+     */
     public function __construct(
         private readonly OpenApiBuilder $builder,
         array $responses
@@ -33,7 +36,7 @@ final class RemoveResponses implements OpenApiExtension
                 $response->path,
                 $response->method,
                 static function (Operation $operation) use ($response) {
-                    $responses = $operation->getResponses();
+                    $responses = $operation->getResponses() ?? [];
 
                     unset($responses[$response->statusCode]);
 

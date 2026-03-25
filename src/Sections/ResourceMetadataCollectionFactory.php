@@ -6,7 +6,6 @@ namespace Linku\ApiDocumentationBundle\Sections;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\HttpOperation;
-use ApiPlatform\Metadata\Operation;
 use ApiPlatform\Metadata\Operations;
 use ApiPlatform\Metadata\Resource\Factory\ResourceMetadataCollectionFactoryInterface;
 use ApiPlatform\Metadata\Resource\ResourceMetadataCollection;
@@ -58,12 +57,15 @@ final class ResourceMetadataCollectionFactory implements ResourceMetadataCollect
         return $resource->withOperations($this->filterOperations($resource->getOperations()));
     }
 
+    /**
+     * @return list<string>|null
+     */
     private function getSectionsFromResource(ApiResource $resource): ?array
     {
         // Check sections attribute first
         $sections = $resource->getExtraProperties()['sections'] ?? null;
-        if ($sections !== null) {
-            return $sections;
+        if (\is_array($sections)) {
+            return \array_values(\array_map('strval', $sections));
         }
 
         // If that isn't used, check the route_prefix attribute
@@ -78,17 +80,21 @@ final class ResourceMetadataCollectionFactory implements ResourceMetadataCollect
         return null;
     }
 
+    /**
+     * @param Operations<HttpOperation>|null $operations
+     *
+     * @return Operations<HttpOperation>
+     */
     private function filterOperations(?Operations $operations): Operations
     {
         if ($operations === null) {
             return new Operations([]);
         }
 
-        /** @var Operation $operation */
+        /** @var HttpOperation $operation */
         foreach ($operations as $name => $operation) {
             $sections = $operation->getExtraProperties()['sections'] ?? null;
-
-            $path = $operation instanceof HttpOperation ? $operation->getUriTemplate() : null;
+            $path = $operation->getUriTemplate();
 
             // If a set of sections is defined for this operation, unset it if none of these sections is the current one
             if ($sections !== null) {
