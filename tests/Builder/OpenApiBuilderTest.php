@@ -29,10 +29,23 @@ final class OpenApiBuilderTest extends TestCase
         );
 
         $operation = $openApi->getPaths()->getPath('/tasks')?->getPost();
+        $requestBody = $operation?->getRequestBody();
+        $content = $requestBody?->getContent();
+        $mediaType = $content?->offsetGet('application/json');
+        $schema = $mediaType?->getSchema();
 
         self::assertNotNull($operation);
         self::assertSame('postTask', $operation->getOperationId());
         self::assertSame('Create task', $operation->getSummary());
-        self::assertNotNull($operation->getRequestBody());
+        self::assertSame(['Tasks'], $operation->getTags());
+        self::assertArrayHasKey('201', $operation->getResponses());
+        self::assertSame('Created', $operation->getResponses()['201']->getDescription());
+        self::assertNotNull($requestBody);
+        self::assertTrue($requestBody->getRequired());
+        self::assertInstanceOf(\ArrayObject::class, $content);
+        self::assertTrue($content->offsetExists('application/json'));
+        self::assertNotNull($mediaType);
+        self::assertNotNull($schema);
+        self::assertSame('#/components/schemas/TaskInput', $schema['$ref']);
     }
 }

@@ -7,6 +7,7 @@ namespace Linku\ApiDocumentationBundle\Tests\Removal;
 use ApiPlatform\OpenApi\Model\ExternalDocumentation;
 use ApiPlatform\OpenApi\Model\Info;
 use ApiPlatform\OpenApi\Model\Operation;
+use ApiPlatform\OpenApi\Model\Parameter;
 use ApiPlatform\OpenApi\Model\PathItem;
 use ApiPlatform\OpenApi\Model\Paths;
 use ApiPlatform\OpenApi\Model\RequestBody;
@@ -30,7 +31,7 @@ final class RemoveRequestBodiesTest extends TestCase
             summary: 'Complete task',
             description: 'Complete task',
             externalDocs: $externalDocs,
-            parameters: [],
+            parameters: [new Parameter('id', 'path', 'Task id', true)],
             requestBody: new RequestBody('Body', new \ArrayObject(), true),
             callbacks: $callbacks,
             deprecated: true,
@@ -45,7 +46,7 @@ final class RemoveRequestBodiesTest extends TestCase
             new OpenApiBuilder(),
             [[
                 'path' => '/tasks/{id}/complete',
-                'method' => 'post',
+                'method' => 'POST',
             ]]
         );
 
@@ -54,10 +55,12 @@ final class RemoveRequestBodiesTest extends TestCase
 
         self::assertNotNull($updatedOperation);
         self::assertNull($updatedOperation->getRequestBody());
+        self::assertSame($operation->getOperationId(), $updatedOperation->getOperationId());
         self::assertSame($operation->getSummary(), $updatedOperation->getSummary());
         self::assertSame($operation->getDescription(), $updatedOperation->getDescription());
         self::assertSame($operation->getTags(), $updatedOperation->getTags());
         self::assertSame($operation->getResponses(), $updatedOperation->getResponses());
+        self::assertSame($operation->getParameters(), $updatedOperation->getParameters());
         self::assertSame($operation->getExternalDocs(), $updatedOperation->getExternalDocs());
         self::assertSame($operation->getCallbacks(), $updatedOperation->getCallbacks());
         self::assertSame($operation->getDeprecated(), $updatedOperation->getDeprecated());

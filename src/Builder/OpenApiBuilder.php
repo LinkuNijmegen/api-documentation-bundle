@@ -78,8 +78,9 @@ final class OpenApiBuilder
             return $openApi;
         }
 
-        $getter = 'get' . \ucfirst($method);
-        $wither = 'with' . \ucfirst($method);
+        $normalizedMethod = \strtolower($method);
+        $getter = 'get' . \ucfirst($normalizedMethod);
+        $wither = 'with' . \ucfirst($normalizedMethod);
 
         if (!\method_exists($pathItem, $getter) || !\method_exists($pathItem, $wither)) {
             return $openApi;
