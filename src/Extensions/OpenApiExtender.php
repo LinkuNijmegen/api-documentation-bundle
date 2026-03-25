@@ -10,10 +10,12 @@ use Linku\ApiDocumentationBundle\Sections\Sections;
 
 final class OpenApiExtender implements OpenApiFactoryInterface
 {
+    /**
+     * @param iterable<mixed> $extensions
+     */
     public function __construct(
         private readonly OpenApiFactoryInterface $decorated,
         private readonly Sections $sections,
-        /** @var OpenApiExtension[] */
         private readonly iterable $extensions = []
     ) {
     }
@@ -23,6 +25,10 @@ final class OpenApiExtender implements OpenApiFactoryInterface
         $docs = $this->decorated->__invoke($context);
 
         foreach ($this->extensions as $extension) {
+            if (!$extension instanceof OpenApiExtension) {
+                continue;
+            }
+
             if ($extension instanceof SectionedOpenApiExtension
                 && $this->sections->hasMultipleSections()
                 && !\in_array($this->sections->getCurrentSection()->name, $extension->getSupportedSections())) {
