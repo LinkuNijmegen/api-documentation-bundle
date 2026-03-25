@@ -1,6 +1,6 @@
 {
     "name": "linku/api-documentation-bundle",
-    "description": "Extension to API-Platform to modify the documenation with more ease",
+    "description": "Extension to API-Platform to modify the documentation with more ease",
     "type": "symfony-bundle",
     "license": "MIT",
     "keywords": [
