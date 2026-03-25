@@ -8,6 +8,8 @@ use Linku\ApiDocumentationBundle\DependencyInjection\LinkuApiDocumentationExtens
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class LinkuApiDocumentationExtensionTest extends TestCase
 {
@@ -58,6 +60,24 @@ final class LinkuApiDocumentationExtensionTest extends TestCase
         self::assertSame([], $container->getParameter('linku_api_documentation.removal.parameters'));
         self::assertSame([], $container->getParameter('linku_api_documentation.removal.request_bodies'));
         self::assertSame([], $container->getParameter('linku_api_documentation.removal.responses'));
+    }
+
+    public function testItProvidesServiceDefinitionsThroughSeparatedPhpConfigFiles(): void
+    {
+        $container = new ContainerBuilder();
+        $loader = new PhpFileLoader(
+            $container,
+            new FileLocator(__DIR__ . '/../../src/Resources/config'),
+        );
+
+        foreach (['builder.php', 'extensions.php', 'removal.php', 'sections.php'] as $file) {
+            $loader->load($file);
+        }
+
+        self::assertTrue($container->hasDefinition('linku_api_documentation.builder.open_api_builder'));
+        self::assertTrue($container->hasDefinition('linku_api_documentation.extensions.open_api_extender'));
+        self::assertTrue($container->hasDefinition('linku_api_documentation.sections.sections'));
+        self::assertTrue($container->hasDefinition('linku_api_documentation.removal.remove_parameters'));
     }
 
     private static function assertDecorates(Definition $definition, string $decoratedServiceId): void
