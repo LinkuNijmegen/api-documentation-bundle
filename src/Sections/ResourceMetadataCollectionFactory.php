@@ -55,7 +55,10 @@ final class ResourceMetadataCollectionFactory implements ResourceMetadataCollect
             return $resource->withOperations(new Operations([]));
         }
 
-        return $resource->withOperations($this->filterOperations($resource->getOperations()));
+        $operations = $resource->getOperations();
+        $this->filterOperations($operations);
+
+        return $resource->withOperations($operations ?? new Operations([]));
     }
 
     /**
@@ -82,20 +85,15 @@ final class ResourceMetadataCollectionFactory implements ResourceMetadataCollect
     }
 
     /**
-     * @param Operations<HttpOperation>|null $operations
-     *
-     * @return Operations<HttpOperation>
+     * @param Operations<Operation>|null $operations
      */
-    private function filterOperations(?Operations $operations): Operations
+    private function filterOperations(?Operations $operations): void
     {
         if ($operations === null) {
-            return new Operations([]);
+            return;
         }
 
-        /** @var iterable<string, Operation> $operationsIterable */
-        $operationsIterable = $operations;
-
-        foreach ($operationsIterable as $name => $operation) {
+        foreach ($operations as $name => $operation) {
             $sections = $operation->getExtraProperties()['sections'] ?? null;
             $path = $operation instanceof HttpOperation ? $operation->getUriTemplate() : null;
 
@@ -122,7 +120,5 @@ final class ResourceMetadataCollectionFactory implements ResourceMetadataCollect
                 $operations->remove($name);
             }
         }
-
-        return $operations;
     }
 }
