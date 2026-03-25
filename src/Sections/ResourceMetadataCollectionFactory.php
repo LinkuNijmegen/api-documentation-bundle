@@ -55,15 +55,21 @@ final class ResourceMetadataCollectionFactory implements ResourceMetadataCollect
             return $resource->withOperations(new Operations([]));
         }
 
-        return $resource->withOperations($this->filterOperations($resource->getOperations()));
+        $operations = $resource->getOperations();
+        $this->filterOperations($operations);
+
+        return $resource->withOperations($operations ?? new Operations([]));
     }
 
+    /**
+     * @return list<string>|null
+     */
     private function getSectionsFromResource(ApiResource $resource): ?array
     {
         // Check sections attribute first
         $sections = $resource->getExtraProperties()['sections'] ?? null;
-        if ($sections !== null) {
-            return $sections;
+        if (\is_array($sections)) {
+            return \array_values(\array_map('strval', $sections));
         }
 
         // If that isn't used, check the route_prefix attribute
@@ -78,16 +84,17 @@ final class ResourceMetadataCollectionFactory implements ResourceMetadataCollect
         return null;
     }
 
-    private function filterOperations(?Operations $operations): Operations
+    /**
+     * @param Operations<Operation>|null $operations
+     */
+    private function filterOperations(?Operations $operations): void
     {
         if ($operations === null) {
-            return new Operations([]);
+            return;
         }
 
-        /** @var Operation $operation */
         foreach ($operations as $name => $operation) {
             $sections = $operation->getExtraProperties()['sections'] ?? null;
-
             $path = $operation instanceof HttpOperation ? $operation->getUriTemplate() : null;
 
             // If a set of sections is defined for this operation, unset it if none of these sections is the current one
@@ -113,7 +120,5 @@ final class ResourceMetadataCollectionFactory implements ResourceMetadataCollect
                 $operations->remove($name);
             }
         }
-
-        return $operations;
     }
 }

@@ -1,0 +1,9 @@
+<phpunit bootstrap="vendor/autoload.php"
+         cacheDirectory=".phpunit.cache"
+         colors="true">
+    <testsuites>
+        <testsuite name="bundle">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

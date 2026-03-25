@@ -10,10 +10,12 @@ use Linku\ApiDocumentationBundle\Sections\Sections;
 
 final class OpenApiExtender implements OpenApiFactoryInterface
 {
+    /**
+     * @param iterable<mixed> $extensions
+     */
     public function __construct(
         private readonly OpenApiFactoryInterface $decorated,
         private readonly Sections $sections,
-        /** @var OpenApiExtension[] */
         private readonly iterable $extensions = []
     ) {
     }

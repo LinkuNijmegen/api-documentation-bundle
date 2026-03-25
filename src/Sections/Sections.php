@@ -18,6 +18,7 @@ final class Sections
 
     /**
      * @throws \RuntimeException
+     * @param array<string, array{prefix: string, title: string}> $sections
      */
     public function __construct(
         private readonly RequestStack $requestStack,
@@ -70,7 +71,7 @@ final class Sections
         return $this->getSectionFromPrefix($prefix) ?? $this->defaultSection;
     }
 
-    public function getSectionFromPrefix($prefix): ?Section
+    public function getSectionFromPrefix(string $prefix): ?Section
     {
         foreach ($this->sections as $section) {
             if ($section->prefix === $prefix) {
@@ -114,6 +115,9 @@ final class Sections
         return $this->getCurrentSection() === $this->defaultSection;
     }
 
+    /**
+     * @param list<string> $allowedSections
+     */
     public function isCurrentSectionAllowed(array $allowedSections): bool
     {
         // No selection means 'allow all'
@@ -124,6 +128,9 @@ final class Sections
         return \in_array($this->getCurrentSection()->name, $allowedSections, true);
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getDocLinks(): array
     {
         $links = [];
