@@ -30,11 +30,11 @@ Optionally, you can add a `prefix:` to prefix all paths generated. This should b
 same prefix as used by API-Platform in their routes.
 
 ## Development And Verification
-Run the project checks in Docker with:
+Run the project checks in your project container with:
 
 ```sh
-docker exec 323eb4468a3f22375429698d838ca12bb20cd2920a612f76da962e1cb9059faf sh -lc 'cd /app && composer test'
-docker exec 323eb4468a3f22375429698d838ca12bb20cd2920a612f76da962e1cb9059faf sh -lc 'cd /app && composer analyse'
+docker exec <your-php-container> sh -lc 'cd /app && composer test'
+docker exec <your-php-container> sh -lc 'cd /app && composer analyse'
 ```
 
 ## Sections
