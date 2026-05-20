@@ -23,7 +23,7 @@ can be found at [the end of this file](#configuration-example).
 You also need to add the following route:
 ```yaml
 linku_api_documentation:
-    resource: "@LinkuApiDocumentationBundle/Resources/routing/sections.xml"
+    resource: "@LinkuApiDocumentationBundle/Resources/routing/sections.php"
 ```
 
 Optionally, you can add a `prefix:` to prefix all paths generated. This should be the
